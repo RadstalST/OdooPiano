@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+  odoo:
+    image: odoo
+    platform: linux/amd64
+    user: root
+    ports:
+      - "8069:8069"
+    volumes:
+      - ./addons:/mnt/extra-addons
+      - odoo-data:/var/lib/odoo
+  db:
+    image: postgres:13
+    platform: linux/amd64
+    volumes:
+      - odoo-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_DB=postgres
+      - odoo-db:/var/lib/postgresql/data
+
+volumes:
+  odoo-data:
+    driver: local
+  odoo-db:
+    driver: local
+
+
